@@ -1,0 +1,46 @@
+body {
+background-image: url(https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    font-family: 'Arial', sans-serif;
+}
+.glass {
+    background: rgba(255, 255, 255, 0.1);
+    
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.card {
+    transition: transform 0.3s ease;
+}
+.card:hover {
+    transform: translateY(-5px);
+}
+.spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top: 4px solid white;    
+    width: 20px;
+    height: 20px;
+    animation: spin 2s linear infinite;
+}
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+#error,
+#hist-error {
+    display: none;
+}
+#loading,
+#hist-loading {
+    display: none;
+}
+#result {
+    display: none;
+}

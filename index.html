@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Currency Converter - Real-Time Exchange Rates</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body class="font-sans text-gray">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl font-bold mb-4">
+                <i class="fas fa-exchange-alt mr-2"></i>Currency Converter
+            </h1>
+            <p class="text-lg">
+                Convert currencies in real-time with up-to-date exchange rates.
+            </p>
+        </header>
+
+        <main class="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="card glass p-6 rounded-lg">
+                <h2 class="text-2xl font-semibold mb-4">Convert Currency</h2>
+                <form id="converter-form" class="space-y-4">
+                    <div>
+                        <label class="block mb-2">From Currency:</label>
+                        <select
+                            id="from-currency"
+                            class="w-full p-3 rounded-lg bg-white text-gray-900"
+                            required
+                        >
+                            <option value="">Loading...</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block mb-2">To Currency:</label>
+                        <select
+                            id="to-currency"
+                            class="w-full p-3 rounded-lg bg-white text-gray-900"
+                            required
+                        >
+                            <option value="">Loading...</option>
+                        </select>
+                    </div>
+                    <button
+                        type="button"
+                        id="swap-btn"
+                        class="bg-blue-500 hover:bg-blue-600 p-2 rounded-full transition-colors"
+                        title="Swap currencies"
+                    >
+                        <i class="fas fa-arrows-alt-h"></i>
+                    </button>
+                    <div>
+                        <label class="block mb-2">Amount:</label>
+                        <input
+                            type="number"
+                            id="amount"
+                            class="w-full p-3 rounded-lg bg-white text-gray-900"
+                            placeholder="Enter amount"
+                            min="0"
+                            step="0.01"
+                            required
+                        />
+                    </div>
+                    <button
+                        type="submit"
+                        id="convert-btn"
+                        class="w-full bg-green-500 hover:bg-green-600 p-3 rounded-lg font-semibold transition-colors"
+                    >
+                        <i class="fas fa-calculator mr-2"></i>Convert
+                    </button>
+                </form>
+                <div
+                    id="loading"
+                    class="mt-4 flex items-center justify-center"
+                    style="display: none"
+                >
+                    <div class="spinner"></div>
+                    <span class="ml-2">Converting...</span>
+                </div>
+                <div
+                    id="error"
+                    class="mt-4 p-3 bg-red-500 rounded-lg flex items-center"
+                    style="display: none"
+                >
+                    <i class="fas fa-exclamation-triangle mr-2"></i
+                    >Error: Unable to convert. Please check your input and try again.
+                </div>
+            </div>
+
+            <div class="glass p-6 rounded-lg">
+                <div id="result" class="card">
+                    <h3 class="text-xl font-semibold mb-2">Conversion Result</h3>
+                    <p id="result-text" class="text-lg"></p>
+                    <p id="rate-text" class="text-sm opacity-80"></p>
+                    <button
+                        id="save-btn"
+                        class="mt-4 bg-orange-500 hover:bg-orange-600 px-4 py-2 rounded-lg"
+                    >
+                        <i class="fas fa-save mr-2"></i>Save to Recent
+                    </button>
+                </div>
+            </div>
+
+            <div class="card glass p-6 rounded-lg col-span-1 lg:col-span-2">
+                <h2 class="text-2xl font-semibold mb-4">Recent Conversions</h2>
+                <ul id="recent-list" class="space-y-2"></ul>
+                <button
+                    id="clear-recent-btn"
+                    class="mt-4 bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg"
+                >
+                    <i class="fas fa-trash mr-2"></i>Clear All
+                </button>
+            </div>
+
+            <div class="card glass p-6 rounded-lg col-span-1 lg:col-span-2">
+                <h2 class="text-2xl font-semibold mb-4">Historical Rates</h2>
+                <form id="historical-form" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <select
+                            id="hist-from"
+                            class="p-3 rounded-lg bg-white text-gray-900"
+                        >
+                            <option value="">Loading...</option>
+                        </select>
+                        <select
+                            id="hist-to"
+                            class="p-3 rounded-lg bg-white text-gray-900"
+                        >
+                            <option value="">Loading...</option>
+                        </select>
+                        <input
+                            type="date"
+                            id="hist-date"
+                            class="p-3 rounded-lg bg-white text-gray-900"
+                            required
+                            max=""
+                        />
+                    </div>
+                    <button
+                        type="submit"
+                        id="hist-convert-btn"
+                        class="w-full bg-purple-500 hover:bg-purple-600 p-3 rounded-lg font-semibold transition-colors"
+                    >
+                        <i class="fas fa-history mr-2"></i>Get Historical Rate
+                    </button>
+                </form>
+                <div
+                    id="hist-loading"
+                    class="mt-4 flex items-center justify-center"
+                    style="display: none"
+                >
+                    <div class="spinner"></div>
+                    <span class="ml-2">Fetching...</span>
+                </div>
+                <div
+                    id="hist-result"
+                    class="mt-4 p-3 bg-blue-500 rounded-lg"
+                    style="display: none"
+                >
+                    <p id="hist-text" class="text-lg"></p>
+                </div>
+                <div
+                    id="hist-error"
+                    class="mt-4 p-3 bg-red-500 rounded-lg flex items-center"
+                    style="display: none"
+                >
+                    <i class="fas fa-exclamation-triangle mr-2"></i>Error fetching historical data.
+                </div>
+            </div>
+        </main>
+
+        <footer class="text-center mt-10">
+            <p>
+                Powered by
+                <a
+                    href="https://www.exchangerate-api.com/"
+                    class="underline"
+                    target="_blank"
+                    >ExchangeRate API</a
+                >
+                &amp;
+                <a
+                    href="https://www.frankfurter.app/"
+                    class="underline"
+                    target="_blank"
+                    >Frankfurter API</a
+                >
+            </p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
